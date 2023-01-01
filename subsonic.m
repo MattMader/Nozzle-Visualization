@@ -17,6 +17,7 @@ T_Tc = zeros(size(A_At));
 
 % convert area ratios
 A_As1 = A_At*Ae_As/Ae_At;
+% A_As1 = Ae_At*Ae_As/Ae_At;
 
 % ratio cannot be lower than 1 (rounding errors)
 A_As1 = max(A_As1,1);

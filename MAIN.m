@@ -5,13 +5,16 @@ clear
 close all
 clc
 
+% add tools
+addpath ./tools/Ise
+
 %% Inputs
 
 % ratio of specific heats
 k = 1.2; % [-]
 
 % nozzle expansion area
-Ae_At = 25; % [-]
+Ae_At = 3; % [-]
 
 % nozzle contraction area
 Ac_At = 4; % [-]
@@ -23,7 +26,7 @@ N = 100;
 alpha_d = deg2rad(15); % [rad]
 
 % converging half angle
-alpha_c = deg2rad(30); % [rad]
+alpha_c = deg2rad(45); % [rad]
 
 %% Nozzle Geometry
 
@@ -57,11 +60,12 @@ Pb_Pc_nse = P2_P1*Pb_Pc_sup;
 
 Pb_Pc = linspace(1,Pb_Pc_sub,50);
 
+f = figure(1);
+
 for idx = 1:length(Pb_Pc)
 
     [P_Pc,M,~,T_Tc] = subsonic(k,Pb_Pc(idx),Ae_At,Ac_At,N);
 
-    figure(2)
     subplot 311
     hold on
     plot(x,P_Pc,'b-')
@@ -84,7 +88,6 @@ for idx = 1:length(Pb_Pc)
     
     [P_Pc,M,~,T_Tc] = normal_shock(k,Pb_Pc(idx),Ae_At,Ac_At,N);
 
-    figure(2)
     subplot 311
     hold on
     plot(x,P_Pc,'g-')
@@ -102,17 +105,16 @@ end
 
 [P_Pc,M,A_At,T_Tc] = over_under_expanded(k,Ae_At,Ac_At,N);
 
-figure(2)
 subplot 311
 hold on
 plot(x,P_Pc,'r-')
 grid on
 ylabel("Pressure Ratio [P/P_c]")
-title("Nozzle Performance With Varying Backpressure Ratio")
 qw{1} = plot(nan, 'b-');
 qw{2} = plot(nan, 'g-');
 qw{3} = plot(nan, 'r-');
-legend([qw{:}], ["Unchoked" "Shock In Nozzle" "Shock Outside Nozzle"], 'location', 'southwest')
+legend([qw{:}], [sprintf("Unchoked (1>P_b/P_0>%0.2f)",Pb_Pc_sub) sprintf("Shock In Nozzle (%0.2f>P_b/P_0>%0.2f)",Pb_Pc_sub,Pb_Pc_nse) sprintf("Shock Outside Nozzle (%0.2f>P_b/P_0)",Pb_Pc_nse)], 'location', 'southwest')
+title(sprintf("Nozzle Performance (%0.2f deg Conv, %0.2f deg Div)With Varying Backpressure Ratio",rad2deg(alpha_c),rad2deg(alpha_d)))
 
 subplot 312
 hold on

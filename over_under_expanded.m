@@ -1,4 +1,24 @@
 function [P_Pc,M,A_At,T_Tc] = over_under_expanded(k,Ae_At,Ac_At,N)
+% OVER_UNDER_EXPANDED Computes isentropic flow properties at stations of a
+%   nozzle when no shocks exist in the nozzle.
+%
+% Inputs:
+%   k - ratio of specific heats
+%   Pb_Pc - Back to chamber pressure ratio
+%   Ae_At - Nozzle area expansion ratio
+%   Ac_At - Chamber area contraction ratio
+%   N - Number of stations
+%
+% Outputs:
+%   P_Pc - Station to chamber pressure ratios
+%   M - Station Mach numbers
+%   A_At - Station area ratios
+%   T_Tc - Station to chamber temperature ratios
+%
+% Notes:
+%   Author - Matthew Mader
+%   Contact - matthewjmader@gmail.com
+%   
 
 % initializations
 A_At_conv = linspace(Ac_At,1,N+1);

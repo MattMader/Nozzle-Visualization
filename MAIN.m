@@ -5,8 +5,8 @@ clear
 close all
 clc
 
-% add tools
-addpath ./tools/Ise
+% add needed tools
+addpath ./tools/Isentropic/
 
 %% Inputs
 
@@ -47,14 +47,17 @@ lambda = 0.5*(1+cos(alpha_d));
 %% Delineations
 
 % subsonic
-[~,~,Pb_Pc_sub] = flowisentropic(k,Ae_At,'sub');
+M_sub = AMR(k,Ae_At,'sub');
+Pb_Pc_sub = MPR(k,M_sub);
 
 % supersonic
-[Me_sup,~,Pb_Pc_sup] = flowisentropic(k,Ae_At,'sup');
+Me_sup = AMR(k,Ae_At,'sup');
+Pb_Pc_sup = MPR(k,Me_sup);
 
 % shock at nozzle exit
-[~,~,P2_P1,~,~] = flownormalshock(k,Me_sup);
-Pb_Pc_nse = P2_P1*Pb_Pc_sup;
+[P02_Pc,Me_nse] = NSR(k,Me_sup);
+Pb_P02 = MPR(k,Me_nse);
+Pb_Pc_nse = Pb_P02*P02_Pc;
 
 %% Subsonic
 
